@@ -28,7 +28,7 @@ jobs:
           languages: python
 
       - name: Exécution de l'analyse CodeQL
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
 
   # --------------------------------------------------------
   # JOB 2 : SCA (Analyse des dépendances Python)
