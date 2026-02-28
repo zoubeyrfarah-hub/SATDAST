@@ -1,0 +1,4 @@
+Flask==2.2.2
+Werkzeug==2.2.2
+# Vulnérabilité SCA : Composant tiers obsolète avec des CVE publiques
+urllib3==1.26.4
