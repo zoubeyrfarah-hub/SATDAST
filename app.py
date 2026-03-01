@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Jeton secret attendu pour accéder à l'administration
 # (Dans la vraie vie, cela serait géré via une base de données ou un fournisseur d'identité)
-EXPECTED_TOKEN = "Bearer token_etudiant_123"
+EXPECTED_TOKEN = "token_etudiant_123"
 
 @app.route('/')
 def home():
