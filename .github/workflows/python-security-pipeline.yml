@@ -53,34 +53,34 @@ jobs:
           severity: 'HIGH,CRITICAL'
 
   # --------------------------------------------------------
-  # JOB 3 : DAST (Analyse Dynamique de l'application Flask)
+  # JOB 3 : DAST (Analyse Dynamique Authentifiée)
   # --------------------------------------------------------
   dast-scan:
-    name: Analyse Dynamique OWASP ZAP
+    name: Analyse Dynamique ZAP avec Privilèges
     runs-on: ubuntu-latest
     
     steps:
-      - name: Récupération du code
-        uses: actions/checkout@v4
-
-      - name: Configuration de Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Installation des dépendances
+      - name: Installation et Démarrage
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
+          python app.py &
+          sleep 5
 
-      - name: Démarrage de l'application Flask en arrière-plan
-        run: python app.py &
-        
-      - name: Attente de l'initialisation du serveur
-        run: sleep 5
-
-      - name: Scan OWASP ZAP
+      - name: Scan OWASP ZAP (Authentifié)
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: 'http://localhost:5000'
           fail_action: false
+          # On utilise cmd_options pour injecter l'authentification
+          cmd_options: >-
+            -config replacer.full_list(0).description="Auth_Header"
+            -config replacer.full_list(0).enabled=true
+            -config replacer.full_list(0).matchtype=req_header
+            -config replacer.full_list(0).matchstr=Authorization
+            -config replacer.full_list(0).regex=false
+            -config replacer.full_list(0).replacement="Bearer token_etudiant_123"
