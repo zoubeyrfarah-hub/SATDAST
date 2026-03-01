@@ -58,7 +58,9 @@ jobs:
   dast-scan:
     name: Analyse Dynamique ZAP avec Privilèges
     runs-on: ubuntu-latest
-    
+    permissions:
+      issues: write # Autorise ZAP à créer un ticket d'incident
+      contents: read # Autorise la lecture du code
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
